@@ -97,6 +97,8 @@
     <Compile Include="EndpointTemplates\DefaultPublisher.cs" />
     <Compile Include="EndpointTemplates\DefaultServer.cs" />
     <Compile Include="Mutators\When_using_outgoing_tm_mutator.cs" />
+    <Compile Include="Performance\MessageDurability\When_disabling_durable_messages_on_durable_transport.cs" />
+    <Compile Include="Performance\MessageDurability\When_using_non_durable_messages_on_durable_only_transport.cs" />
     <Compile Include="Performance\When_message_is_faulted.cs" />
     <Compile Include="Persistence\When_a_persistence_does_not_support_outbox.cs" />
     <Compile Include="Persistence\When_a_persistence_does_not_support_saga.cs" />
@@ -157,6 +159,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Routing\SubscriptionBehaviorExtensions.cs" />
+    <Compile Include="UnicastPubSubExtensions.cs" />
     <Compile Include="Routing\When_multi_subscribing_to_a_polymorphic_event_on_multicast_transports.cs" />
     <Compile Include="Routing\When_handler_exists_but_routing_information_is_missing.cs" />
     <Compile Include="Routing\When_publishing_to_scaled_out_subscribers_on_unicast_transports.cs" />

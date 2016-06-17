@@ -20,22 +20,23 @@ namespace NServiceBus
         }
 
         public int MaxRetries { get; }
+        
+        public override bool TryGetDelay(SecondLevelRetryContext slrRetryContext, out TimeSpan delay)
 
-        public override bool TryGetDelay(IncomingMessage message, Exception ex, int currentRetry, out TimeSpan delay)
         {
             delay = TimeSpan.MinValue;
 
-            if (currentRetry > MaxRetries)
+            if (slrRetryContext.SecondLevelRetryAttempt > MaxRetries)
             {
                 return false;
             }
 
-            if (HasReachedMaxTime(message))
+            if (HasReachedMaxTime(slrRetryContext.Message))
             {
                 return false;
             }
 
-            delay = TimeSpan.FromTicks(timeIncrease.Ticks*currentRetry);
+            delay = TimeSpan.FromTicks(timeIncrease.Ticks*slrRetryContext.SecondLevelRetryAttempt);
 
             return true;
         }

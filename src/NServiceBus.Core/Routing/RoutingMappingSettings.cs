@@ -1,9 +1,7 @@
 namespace NServiceBus
 {
-    using System;
     using Configuration.AdvanceExtensibility;
     using Routing;
-    using Routing.MessageDrivenSubscriptions;
     using Settings;
 
     /// <summary>
@@ -19,38 +17,21 @@ namespace NServiceBus
         /// <summary>
         /// Gets the routing table for the direct routing.
         /// </summary>
-        public UnicastRoutingTable Logical => GetOrCreate<UnicastRoutingTable>();
+        public UnicastRoutingTable Logical => Settings.GetOrCreate<UnicastRoutingTable>();
 
         /// <summary>
         /// Gets the known endpoints collection.
         /// </summary>
-        public EndpointInstances Physical => GetOrCreate<EndpointInstances>();
+        public EndpointInstances Physical => Settings.GetOrCreate<EndpointInstances>();
 
         /// <summary>
-        /// Gets the publisher settings.
+        /// Sets a distribution strategy for a given endpoint.
         /// </summary>
-        public Publishers Publishers => GetOrCreate<Publishers>();
-
-        /// <summary>
-        /// Sets a distribution strategy for a given subset of message types.
-        /// </summary>
+        /// <param name="endpointName">The name of the logical endpoint the given strategy should apply to.</param>
         /// <param name="distributionStrategy">The instance of a distribution strategy.</param>
-        /// <param name="typeMatchingRule">A predicate for determining the set of types.</param>
-        public void SetMessageDistributionStrategy(DistributionStrategy distributionStrategy, Func<Type, bool> typeMatchingRule)
+        public void SetMessageDistributionStrategy(string endpointName, DistributionStrategy distributionStrategy)
         {
-            GetOrCreate<DistributionPolicy>().SetDistributionStrategy(distributionStrategy, typeMatchingRule);
-        }
-
-        T GetOrCreate<T>()
-            where T : new()
-        {
-            T value;
-            if (!Settings.TryGet(out value))
-            {
-                value = new T();
-                Settings.Set<T>(value);
-            }
-            return value;
+            Settings.GetOrCreate<DistributionPolicy>().SetDistributionStrategy(endpointName, distributionStrategy);
         }
     }
 }

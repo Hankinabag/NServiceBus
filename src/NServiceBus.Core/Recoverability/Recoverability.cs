@@ -64,7 +64,7 @@
 
         static SecondLevelRetryPolicy GetDelayedRetryPolicy(ReadOnlySettings settings)
         {
-            Func<IncomingMessage, TimeSpan> customRetryPolicy;
+            Func<SecondLevelRetryContext, TimeSpan> customRetryPolicy;
             if (settings.TryGet(SlrCustomPolicy, out customRetryPolicy))
             {
                 return new CustomSecondLevelRetryPolicy(customRetryPolicy);
@@ -91,7 +91,7 @@
                 return false;
             }
 
-            Func<IncomingMessage, TimeSpan> customPolicy;
+            Func<SecondLevelRetryContext, TimeSpan> customPolicy;
             if (settings.TryGet(SlrCustomPolicy, out customPolicy))
             {
                 return true;

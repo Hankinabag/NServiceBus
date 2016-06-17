@@ -1,27 +1,17 @@
 namespace NServiceBus
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Collections.Concurrent;
     using Routing;
 
-    class DistributionPolicy
+    class DistributionPolicy : IDistributionPolicy
     {
-        public DistributionPolicy()
+        public void SetDistributionStrategy(string endpointName, DistributionStrategy distributionStrategy)
         {
-            strategies.Add(new Tuple<Func<Type, bool>, DistributionStrategy>(_ => true, new SingleInstanceRoundRobinDistributionStrategy()));
+            configuredStrategies[endpointName] = distributionStrategy;
         }
 
-        internal void SetDistributionStrategy(DistributionStrategy distributionStrategy, Func<Type, bool> typeMatchingRule)
-        {
-            strategies.Insert(0, Tuple.Create(typeMatchingRule, distributionStrategy));
-        }
+        public DistributionStrategy GetDistributionStrategy(string endpointName) => configuredStrategies.GetOrAdd(endpointName, key => new SingleInstanceRoundRobinDistributionStrategy());
 
-        internal DistributionStrategy GetDistributionStrategy(Type messageType)
-        {
-            return strategies.Where(s => s.Item1(messageType)).Select(s => s.Item2).FirstOrDefault();
-        }
-
-        List<Tuple<Func<Type, bool>, DistributionStrategy>> strategies = new List<Tuple<Func<Type, bool>, DistributionStrategy>>();
+        ConcurrentDictionary<string, DistributionStrategy> configuredStrategies = new ConcurrentDictionary<string, DistributionStrategy>();
     }
 }
