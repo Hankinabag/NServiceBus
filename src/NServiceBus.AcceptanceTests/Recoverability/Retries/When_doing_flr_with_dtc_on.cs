@@ -52,7 +52,7 @@
         {
             public RetryEndpoint()
             {
-                EndpointSetup<DefaultServerWithFlrOn>((b, context) =>
+                EndpointSetup<DefaultServer>((b, context) =>
                 {
                     var scenarioContext = (Context) context.ScenarioContext;
                     b.Notifications.Errors.MessageSentToErrorQueue += (sender, message) => scenarioContext.GaveUpOnRetries = true;

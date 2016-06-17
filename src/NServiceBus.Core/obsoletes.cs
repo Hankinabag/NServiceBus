@@ -1032,6 +1032,30 @@ namespace NServiceBus.Config
     }
 }
 
+namespace NServiceBus.SecondLevelRetries.Config
+{
+    using System;
+
+    [ObsoleteEx(
+        RemoveInVersion = "7.0",
+        TreatAsErrorFromVersion = "6.0",
+        ReplacementTypeOrMember = "NServiceBus.SecondLevelRetriesSettings")]
+    public class SecondLevelRetriesSettings
+    {
+        /// <summary>
+        /// Register a custom retry policy.
+        /// </summary>
+        [ObsoleteEx(
+            RemoveInVersion = "7.0",
+            TreatAsErrorFromVersion = "6.0",
+            ReplacementTypeOrMember = "NServiceBus.SecondLevelRetriesSettings.CustomRetryPolicy(Func<IncomingMessage, TimeSpan> customPolicy)")]
+        public void CustomRetryPolicy(Func<TransportMessage, TimeSpan> customPolicy)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
 namespace NServiceBus.Faults
 {
     [ObsoleteEx(
@@ -1446,18 +1470,6 @@ namespace NServiceBus.Pipeline
         public static readonly WellKnownStep EnforceUnsubscribeBestPractices;
     }
 
-    public partial class StepRegistrationSequence
-    {
-        [ObsoleteEx(
-            RemoveInVersion = "7.0",
-            TreatAsErrorFromVersion = "6.0",
-            ReplacementTypeOrMember = "Register(string stepId, Type behavior, string description)")]
-        public StepRegistrationSequence Register(WellKnownStep wellKnownStep, Type behavior, string description)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public abstract partial class RegisterStep
     {
         [ObsoleteEx(
@@ -1513,15 +1525,6 @@ namespace NServiceBus.Pipeline
             TreatAsErrorFromVersion = "6.0",
             ReplacementTypeOrMember = "Replace(string stepId, Type newBehavior, string description)")]
         public void Replace(WellKnownStep wellKnownStep, Type newBehavior, string description = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        [ObsoleteEx(
-            RemoveInVersion = "7.0",
-            TreatAsErrorFromVersion = "6.0",
-            ReplacementTypeOrMember = "Register(string stepId, Type behavior, string description)")]
-        public StepRegistrationSequence Register(WellKnownStep wellKnownStep, Type behavior, string description)
         {
             throw new NotImplementedException();
         }
