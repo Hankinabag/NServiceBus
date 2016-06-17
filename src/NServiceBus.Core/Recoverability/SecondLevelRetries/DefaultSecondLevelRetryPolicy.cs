@@ -14,19 +14,16 @@ namespace NServiceBus
         {
             Guard.AgainstNull(nameof(currentUtcTimeProvider), currentUtcTimeProvider);
 
-            MaxRetries = maxRetries;
+            this.maxRetries = maxRetries;
             this.timeIncrease = timeIncrease;
             this.currentUtcTimeProvider = currentUtcTimeProvider;
         }
 
-        public int MaxRetries { get; }
-        
         public override bool TryGetDelay(SecondLevelRetryContext slrRetryContext, out TimeSpan delay)
-
         {
             delay = TimeSpan.MinValue;
 
-            if (slrRetryContext.SecondLevelRetryAttempt > MaxRetries)
+            if (slrRetryContext.SecondLevelRetryAttempt > maxRetries)
             {
                 return false;
             }
@@ -77,6 +74,7 @@ namespace NServiceBus
         }
 
         Func<DateTime> currentUtcTimeProvider;
+        int maxRetries;
         TimeSpan timeIncrease;
 
         public static int DefaultNumberOfRetries = 3;
